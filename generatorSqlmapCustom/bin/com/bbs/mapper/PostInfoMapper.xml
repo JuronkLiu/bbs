@@ -1,0 +1,428 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.bbs.mapper.PostInfoMapper" >
+  <resultMap id="BaseResultMap" type="com.bbs.pojo.PostInfo" >
+    <id column="post_id" property="postId" jdbcType="VARCHAR" />
+    <result column="user_id" property="userId" jdbcType="VARCHAR" />
+    <result column="catetory_id" property="catetoryId" jdbcType="VARCHAR" />
+    <result column="post_title" property="postTitle" jdbcType="VARCHAR" />
+    <result column="post_click_num" property="postClickNum" jdbcType="INTEGER" />
+    <result column="post_revert_num" property="postRevertNum" jdbcType="INTEGER" />
+    <result column="post_fine_num" property="postFineNum" jdbcType="INTEGER" />
+    <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
+    <result column="update_date" property="updateDate" jdbcType="TIMESTAMP" />
+    <result column="is_off" property="isOff" jdbcType="INTEGER" />
+    <result column="off_reason" property="offReason" jdbcType="VARCHAR" />
+    <result column="is_del" property="isDel" jdbcType="INTEGER" />
+    <result column="del_reason" property="delReason" jdbcType="VARCHAR" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.bbs.pojo.PostInfoWithBLOBs" extends="BaseResultMap" >
+    <result column="post_pic" property="postPic" jdbcType="LONGVARBINARY" />
+    <result column="post_content" property="postContent" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    post_id, user_id, catetory_id, post_title, post_click_num, post_revert_num, post_fine_num, 
+    create_date, update_date, is_off, off_reason, is_del, del_reason
+  </sql>
+  <sql id="Blob_Column_List" >
+    post_pic, post_content
+  </sql>
+  <select id="selectByExampleWithBLOBs" resultMap="ResultMapWithBLOBs" parameterType="com.bbs.pojo.PostInfoExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from post_info
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.bbs.pojo.PostInfoExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from post_info
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from post_info
+    where post_id = #{postId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from post_info
+    where post_id = #{postId,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.bbs.pojo.PostInfoExample" >
+    delete from post_info
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.bbs.pojo.PostInfoWithBLOBs" >
+    insert into post_info (post_id, user_id, catetory_id, 
+      post_title, post_click_num, post_revert_num, 
+      post_fine_num, create_date, update_date, 
+      is_off, off_reason, is_del, 
+      del_reason, post_pic, post_content
+      )
+    values (#{postId,jdbcType=VARCHAR}, #{userId,jdbcType=VARCHAR}, #{catetoryId,jdbcType=VARCHAR}, 
+      #{postTitle,jdbcType=VARCHAR}, #{postClickNum,jdbcType=INTEGER}, #{postRevertNum,jdbcType=INTEGER}, 
+      #{postFineNum,jdbcType=INTEGER}, #{createDate,jdbcType=TIMESTAMP}, #{updateDate,jdbcType=TIMESTAMP}, 
+      #{isOff,jdbcType=INTEGER}, #{offReason,jdbcType=VARCHAR}, #{isDel,jdbcType=INTEGER}, 
+      #{delReason,jdbcType=VARCHAR}, #{postPic,jdbcType=LONGVARBINARY}, #{postContent,jdbcType=LONGVARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.bbs.pojo.PostInfoWithBLOBs" >
+    insert into post_info
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="postId != null" >
+        post_id,
+      </if>
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="catetoryId != null" >
+        catetory_id,
+      </if>
+      <if test="postTitle != null" >
+        post_title,
+      </if>
+      <if test="postClickNum != null" >
+        post_click_num,
+      </if>
+      <if test="postRevertNum != null" >
+        post_revert_num,
+      </if>
+      <if test="postFineNum != null" >
+        post_fine_num,
+      </if>
+      <if test="createDate != null" >
+        create_date,
+      </if>
+      <if test="updateDate != null" >
+        update_date,
+      </if>
+      <if test="isOff != null" >
+        is_off,
+      </if>
+      <if test="offReason != null" >
+        off_reason,
+      </if>
+      <if test="isDel != null" >
+        is_del,
+      </if>
+      <if test="delReason != null" >
+        del_reason,
+      </if>
+      <if test="postPic != null" >
+        post_pic,
+      </if>
+      <if test="postContent != null" >
+        post_content,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="postId != null" >
+        #{postId,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="catetoryId != null" >
+        #{catetoryId,jdbcType=VARCHAR},
+      </if>
+      <if test="postTitle != null" >
+        #{postTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="postClickNum != null" >
+        #{postClickNum,jdbcType=INTEGER},
+      </if>
+      <if test="postRevertNum != null" >
+        #{postRevertNum,jdbcType=INTEGER},
+      </if>
+      <if test="postFineNum != null" >
+        #{postFineNum,jdbcType=INTEGER},
+      </if>
+      <if test="createDate != null" >
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateDate != null" >
+        #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isOff != null" >
+        #{isOff,jdbcType=INTEGER},
+      </if>
+      <if test="offReason != null" >
+        #{offReason,jdbcType=VARCHAR},
+      </if>
+      <if test="isDel != null" >
+        #{isDel,jdbcType=INTEGER},
+      </if>
+      <if test="delReason != null" >
+        #{delReason,jdbcType=VARCHAR},
+      </if>
+      <if test="postPic != null" >
+        #{postPic,jdbcType=LONGVARBINARY},
+      </if>
+      <if test="postContent != null" >
+        #{postContent,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.bbs.pojo.PostInfoExample" resultType="java.lang.Integer" >
+    select count(*) from post_info
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update post_info
+    <set >
+      <if test="record.postId != null" >
+        post_id = #{record.postId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.userId != null" >
+        user_id = #{record.userId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.catetoryId != null" >
+        catetory_id = #{record.catetoryId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.postTitle != null" >
+        post_title = #{record.postTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="record.postClickNum != null" >
+        post_click_num = #{record.postClickNum,jdbcType=INTEGER},
+      </if>
+      <if test="record.postRevertNum != null" >
+        post_revert_num = #{record.postRevertNum,jdbcType=INTEGER},
+      </if>
+      <if test="record.postFineNum != null" >
+        post_fine_num = #{record.postFineNum,jdbcType=INTEGER},
+      </if>
+      <if test="record.createDate != null" >
+        create_date = #{record.createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updateDate != null" >
+        update_date = #{record.updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.isOff != null" >
+        is_off = #{record.isOff,jdbcType=INTEGER},
+      </if>
+      <if test="record.offReason != null" >
+        off_reason = #{record.offReason,jdbcType=VARCHAR},
+      </if>
+      <if test="record.isDel != null" >
+        is_del = #{record.isDel,jdbcType=INTEGER},
+      </if>
+      <if test="record.delReason != null" >
+        del_reason = #{record.delReason,jdbcType=VARCHAR},
+      </if>
+      <if test="record.postPic != null" >
+        post_pic = #{record.postPic,jdbcType=LONGVARBINARY},
+      </if>
+      <if test="record.postContent != null" >
+        post_content = #{record.postContent,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExampleWithBLOBs" parameterType="map" >
+    update post_info
+    set post_id = #{record.postId,jdbcType=VARCHAR},
+      user_id = #{record.userId,jdbcType=VARCHAR},
+      catetory_id = #{record.catetoryId,jdbcType=VARCHAR},
+      post_title = #{record.postTitle,jdbcType=VARCHAR},
+      post_click_num = #{record.postClickNum,jdbcType=INTEGER},
+      post_revert_num = #{record.postRevertNum,jdbcType=INTEGER},
+      post_fine_num = #{record.postFineNum,jdbcType=INTEGER},
+      create_date = #{record.createDate,jdbcType=TIMESTAMP},
+      update_date = #{record.updateDate,jdbcType=TIMESTAMP},
+      is_off = #{record.isOff,jdbcType=INTEGER},
+      off_reason = #{record.offReason,jdbcType=VARCHAR},
+      is_del = #{record.isDel,jdbcType=INTEGER},
+      del_reason = #{record.delReason,jdbcType=VARCHAR},
+      post_pic = #{record.postPic,jdbcType=LONGVARBINARY},
+      post_content = #{record.postContent,jdbcType=LONGVARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update post_info
+    set post_id = #{record.postId,jdbcType=VARCHAR},
+      user_id = #{record.userId,jdbcType=VARCHAR},
+      catetory_id = #{record.catetoryId,jdbcType=VARCHAR},
+      post_title = #{record.postTitle,jdbcType=VARCHAR},
+      post_click_num = #{record.postClickNum,jdbcType=INTEGER},
+      post_revert_num = #{record.postRevertNum,jdbcType=INTEGER},
+      post_fine_num = #{record.postFineNum,jdbcType=INTEGER},
+      create_date = #{record.createDate,jdbcType=TIMESTAMP},
+      update_date = #{record.updateDate,jdbcType=TIMESTAMP},
+      is_off = #{record.isOff,jdbcType=INTEGER},
+      off_reason = #{record.offReason,jdbcType=VARCHAR},
+      is_del = #{record.isDel,jdbcType=INTEGER},
+      del_reason = #{record.delReason,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.bbs.pojo.PostInfoWithBLOBs" >
+    update post_info
+    <set >
+      <if test="userId != null" >
+        user_id = #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="catetoryId != null" >
+        catetory_id = #{catetoryId,jdbcType=VARCHAR},
+      </if>
+      <if test="postTitle != null" >
+        post_title = #{postTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="postClickNum != null" >
+        post_click_num = #{postClickNum,jdbcType=INTEGER},
+      </if>
+      <if test="postRevertNum != null" >
+        post_revert_num = #{postRevertNum,jdbcType=INTEGER},
+      </if>
+      <if test="postFineNum != null" >
+        post_fine_num = #{postFineNum,jdbcType=INTEGER},
+      </if>
+      <if test="createDate != null" >
+        create_date = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateDate != null" >
+        update_date = #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isOff != null" >
+        is_off = #{isOff,jdbcType=INTEGER},
+      </if>
+      <if test="offReason != null" >
+        off_reason = #{offReason,jdbcType=VARCHAR},
+      </if>
+      <if test="isDel != null" >
+        is_del = #{isDel,jdbcType=INTEGER},
+      </if>
+      <if test="delReason != null" >
+        del_reason = #{delReason,jdbcType=VARCHAR},
+      </if>
+      <if test="postPic != null" >
+        post_pic = #{postPic,jdbcType=LONGVARBINARY},
+      </if>
+      <if test="postContent != null" >
+        post_content = #{postContent,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where post_id = #{postId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.bbs.pojo.PostInfoWithBLOBs" >
+    update post_info
+    set user_id = #{userId,jdbcType=VARCHAR},
+      catetory_id = #{catetoryId,jdbcType=VARCHAR},
+      post_title = #{postTitle,jdbcType=VARCHAR},
+      post_click_num = #{postClickNum,jdbcType=INTEGER},
+      post_revert_num = #{postRevertNum,jdbcType=INTEGER},
+      post_fine_num = #{postFineNum,jdbcType=INTEGER},
+      create_date = #{createDate,jdbcType=TIMESTAMP},
+      update_date = #{updateDate,jdbcType=TIMESTAMP},
+      is_off = #{isOff,jdbcType=INTEGER},
+      off_reason = #{offReason,jdbcType=VARCHAR},
+      is_del = #{isDel,jdbcType=INTEGER},
+      del_reason = #{delReason,jdbcType=VARCHAR},
+      post_pic = #{postPic,jdbcType=LONGVARBINARY},
+      post_content = #{postContent,jdbcType=LONGVARCHAR}
+    where post_id = #{postId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.bbs.pojo.PostInfo" >
+    update post_info
+    set user_id = #{userId,jdbcType=VARCHAR},
+      catetory_id = #{catetoryId,jdbcType=VARCHAR},
+      post_title = #{postTitle,jdbcType=VARCHAR},
+      post_click_num = #{postClickNum,jdbcType=INTEGER},
+      post_revert_num = #{postRevertNum,jdbcType=INTEGER},
+      post_fine_num = #{postFineNum,jdbcType=INTEGER},
+      create_date = #{createDate,jdbcType=TIMESTAMP},
+      update_date = #{updateDate,jdbcType=TIMESTAMP},
+      is_off = #{isOff,jdbcType=INTEGER},
+      off_reason = #{offReason,jdbcType=VARCHAR},
+      is_del = #{isDel,jdbcType=INTEGER},
+      del_reason = #{delReason,jdbcType=VARCHAR}
+    where post_id = #{postId,jdbcType=VARCHAR}
+  </update>
+</mapper>
